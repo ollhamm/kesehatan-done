@@ -48,6 +48,63 @@
                                     <option value="NON-BPJS" @if ($pemeriksaans->jenis_pembayaran === 'NON-BPJS') selected @endif>NON-BPJS</option>
                                 </select>
                             </div>
+                            <!-- Validasi untuk kolom tambahan -->
+                            <div class="mb-3">
+                                <label for="WBC" class="form-label">WBC:</label>
+                                <input type="number" step="0.01" class="form-control" id="WBC" name="WBC"
+                                    value="{{ $pemeriksaans->WBC }}">
+                            </div>
+                            <div class="mb-3">
+                                <label for="RBC" class="form-label">RBC:</label>
+                                <input type="number" step="0.01" class="form-control" id="RBC" name="RBC"
+                                    value="{{ $pemeriksaans->RBC }}">
+                            </div>
+                            <!-- Lanjutkan dengan validasi untuk kolom tambahan lainnya -->
+                            <div class="mb-3">
+                                <label for="PLT" class="form-label">PLT:</label>
+                                <input type="number" step="0.01" class="form-control" id="PLT" name="PLT" value="{{ $pemeriksaans->PLT }}">
+                            </div>
+                            <div class="mb-3">
+                                <label for="HGB" class="form-label">HGB:</label>
+                                <input type="number" step="0.01" class="form-control" id="HGB" name="HGB" value="{{ $pemeriksaans->HGB }}">
+                            </div>
+                            <div class="mb-3">
+                                <label for="HTM" class="form-label">HTM:</label>
+                                <input type="number" step="0.01" class="form-control" id="HTM" name="HTM" value="{{ $pemeriksaans->HTM }}">
+                            </div>
+                            <div class="mb-3">
+                                <label for="Neu" class="form-label">Neu:</label>
+                                <input type="number" step="0.01" class="form-control" id="Neu" name="Neu" value="{{ $pemeriksaans->Neu }}">
+                            </div>
+                            <div class="mb-3">
+                                <label for="Eos" class="form-label">Eos:</label>
+                                <input type="number" step="0.01" class="form-control" id="Eos" name="Eos" value="{{ $pemeriksaans->Eos }}">
+                            </div>
+                            <div class="mb-3">
+                                <label for="Bas" class="form-label">Bas:</label>
+                                <input type="number" step="0.01" class="form-control" id="Bas" name="Bas" value="{{ $pemeriksaans->Bas }}">
+                            </div>
+                            <div class="mb-3">
+                                <label for="Bas" class="form-label">Lym:</label>
+                                <input type="number" step="0.01" class="form-control" id="Lym" name="Lym" value="{{ $pemeriksaans->Lym }}">
+                            </div>
+                            <div class="mb-3">
+                                <label for="Bas" class="form-label">Mon:</label>
+                                <input type="number" step="0.01" class="form-control" id="Mon" name="Mon" value="{{ $pemeriksaans->Mon }}">
+                            </div>
+                            <div class="mb-3">
+                                <label for="Bas" class="form-label">MCV:</label>
+                                <input type="number" step="0.01" class="form-control" id="MCV" name="MCV" value="{{ $pemeriksaans->MCV }}">
+                            </div>
+                            <div class="mb-3">
+                                <label for="Bas" class="form-label">MCH:</label>
+                                <input type="number" step="0.01" class="form-control" id="MCH" name="MCH" value="{{ $pemeriksaans->MCH }}">
+                            </div>
+                            <div class="mb-3">
+                                <label for="Bas" class="form-label">MCHC:</label>
+                                <input type="number" step="0.01" class="form-control" id="MCHC" name="MCHC" value="{{ $pemeriksaans->MCHC }}">
+                            </div>
+                            
                             <button type="submit" class="btn btn-primary">Save</button>
                         </form>
                     </div>

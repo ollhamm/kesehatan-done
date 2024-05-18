@@ -17,6 +17,19 @@ class Pemeriksaan extends Model
         'rujukan_pemeriksaan',
         'rincian_pemeriksaan',
         'jenis_pembayaran',
+        'WBC',
+        'RBC',
+        'PLT',
+        'HGB',
+        'HTM',
+        'Neu',
+        'Eos',
+        'Bas',
+        'Lym',
+        'Mon',
+        'MCV',
+        'MCH',
+        'MCHC'
     ];
 
 

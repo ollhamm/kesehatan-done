@@ -59,6 +59,10 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/kunjungan-labolaturium', [KunjunganLabolaturiumController::class, 'showKunjunganForm'])->name('kunjunganLabolaturium');
     Route::get('/kunjungan-labolaturium/create', [KunjunganLabolaturiumController::class, 'create'])->name('kunjunganLabolaturium.create');
     Route::post('/kunjungan-labolaturium/store', [KunjunganLabolaturiumController::class, 'store'])->name('kunjunganLabolaturium.store');
+    Route::get('/kunjungan-labolaturium/{id}/edit', [KunjunganLabolaturiumController::class, 'edit'])->name('kunjunganLabolaturium.edit');
+    Route::put('/kunjungan-labolaturium/{id}/update', [KunjunganLabolaturiumController::class, 'update'])->name('kunjunganLabolaturium.update');
+    Route::delete('/kunjungan-labolaturium/{id}/destroy', [KunjunganLabolaturiumController::class, 'destroy'])->name('kunjunganLabolaturium.destroy');
+    Route::get('/kunjungan-labolaturium/{id}/details', [KunjunganLabolaturiumController::class, 'showKunjunganDetail'])->name('kunjunganLabolaturium.details');
 
 });
 

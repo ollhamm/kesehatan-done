@@ -60,20 +60,9 @@
                                                 @enderror
                                             </div>
                                         </div>
-                                        <div class="form-group row">
-                                            <div class="col-md-8 offset-md-4">
-                                                <div class="form-check">
-                                                    <input class="form-check-input" type="checkbox" name="remember"
-                                                        id="remember" {{ old('remember') ? 'checked' : '' }}>
-                                                    <label class="form-check-label" style="font-size: 14px" for="remember">
-                                                        {{ __('Remember Me') }}
-                                                    </label>
-                                                </div>
-                                            </div>
-                                        </div>
                                         <div class="form-group row mt-3">
                                             <div class="col-md-8 offset-md-4 text-right">
-                                                <button type="submit" class="btn text-white"
+                                                <button type="submit" class="btn btn text-light float-end"
                                                     style="background-color: #7fbf7f">
                                                     {{ __('Login') }}
                                                 </button>

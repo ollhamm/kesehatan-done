@@ -27,6 +27,7 @@
             }
         }
 
+
         .fade-in-left {
             animation: fadeInLeftAnimation ease 0.5s;
             animation-iteration-count: 1;
@@ -70,6 +71,7 @@
             animation: slideInFromTop ease 0.5s forwards;
             opacity: 0;
             transform: translateY(-100%);
+            z-index: 1000;
         }
 
         @keyframes slideInFromTop {
@@ -84,13 +86,6 @@
             }
 
 
-        }
-
-        .table td:nth-child(5) {
-            max-width: 200px;
-            /* Sesuaikan dengan lebar maksimum yang diinginkan */
-            overflow: auto;
-            word-wrap: break-word;
         }
 
         .vertical-line {
@@ -136,25 +131,22 @@
 
         /* kalender */
         .calendar {
-            height: max-content;
-            width: max-content;
+            height: 100%;
+            width: 100%;
             background-color: #f3f3ff;
             border-radius: 30px;
-            padding: 20px;
+            padding: 10px;
             overflow: hidden;
             box-sizing: border-box;
-            
+
         }
 
-        .light .calendar {
-            box-shadow: var(--shadow);
-        }
 
         .calendar-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            font-size: 25px;
+            font-size: 20px;
             font-weight: 600;
             color: var(--color-txt);
             padding: 10px;
@@ -169,6 +161,9 @@
             display: grid;
             grid-template-columns: repeat(7, 1fr);
             font-weight: 600;
+            text-align: center;
+            /* Ensure text is centered horizontally */
+            align-items: center;
         }
 
         .calendar-week-day div {
@@ -185,8 +180,8 @@
         }
 
         .calendar-days div {
-            width: 50px;
-            height: 50px;
+            width: 100%;
+            height: 40px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -194,7 +189,6 @@
             position: relative;
             cursor: pointer;
             animation: to-top 1s forwards;
-            /* border-radius: 50%; */
         }
 
         .calendar-days div span {
@@ -308,34 +302,6 @@
             align-items: center;
         }
 
-        .toggle {
-            display: flex;
-        }
-
-        .toggle span {
-            margin-right: 10px;
-            color: var(--color-txt);
-        }
-
-        .dark-mode-switch {
-            position: relative;
-            width: 48px;
-            height: 25px;
-            border-radius: 14px;
-            background-color: var(--bg-second);
-            cursor: pointer;
-        }
-
-        .dark-mode-switch-ident {
-            width: 21px;
-            height: 21px;
-            border-radius: 50%;
-            background-color: var(--bg-main);
-            position: absolute;
-            top: 2px;
-            left: 2px;
-            transition: left 0.2s ease-in-out;
-        }
 
         .dark .dark-mode-switch .dark-mode-switch-ident {
             top: 2px;
@@ -344,30 +310,25 @@
 
         .month-list {
             position: absolute;
-            width: 100%;
             height: 100%;
             top: 0;
             left: 0;
             background-color: var(--bg-main);
-            padding: 20px;
-            grid-template-columns: repeat(3, auto);
-            gap: 5px;
+            padding: 10px;
             display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            /* Adjust columns to be equal */
+            gap: 6px;
             transform: scale(1.5);
             visibility: hidden;
             pointer-events: none;
         }
 
-        .month-list.show {
-            transform: scale(1);
-            visibility: visible;
-            pointer-events: visible;
-            transition: all 0.2s ease-in-out;
-        }
 
         .month-list>div {
-            display: grid;
-            place-items: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .month-list>div>div {
@@ -382,15 +343,38 @@
         .month-list>div>div:hover {
             background-color: var(--color-hover);
         }
-        .navbar-content {
-        z-index: 1000; /* Atur nilai sesuai kebutuhan, pastikan lebih tinggi dari elemen lain */
-}
 
+        .alamat {
+            max-width: 200px;
+            /* Sesuaikan dengan lebar maksimum kolom alamat */
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        /* logout style */
+        .dropdown-item:hover,
+        .dropdown-item:focus,
+        .dropdown-item:active {
+            color: inherit;
+            background-color: transparent !important;
+            text-decoration: none;
+        }
+
+        .form-control:focus {
+            border-color: #28a745 !important;
+            box-shadow: 0 0 0 0.25rem rgba(40, 167, 69, 0.25) !important;
+        }
+        .small-text {
+            font-size: 12px; /* Adjust this value as needed */
+        }
+        .small-banget {
+            font-size: 10px; /* Adjust this value as needed */
+        }
     </style>
 </head>
 
 <body style="background-color: #e5f2e5">
-
     <nav class="navbar navbar-expand-lg navbar-light bg-light px-4 navbar-content" style="background-color: #b2d8b2">
         <a class="navbar-brand" href="/">
             <span style="font-weight: bold; color: #7fbf7f;"> <i class="fa-solid fa-notes-medical"></i> RSU Cinta
@@ -398,28 +382,33 @@
         </a>
         @if (!Route::is('login') && !Route::is('register'))
             <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
-                <ul class="navbar-nav">
-                    <li class="nav-item dropdown">
-                        <a style="font-weight: bold; color: #7fbf7f;" class="nav-link dropdown-toggle" href="#"
-                            id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            <i class="fas fa-user"></i> {{ session('user_name') }}
-                        </a>
-                        <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown" style="z-index: 9999;">
-                            <li>
-                                <a class="dropdown-item text-danger" href="{{ route('logout') }}"
+                <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+                    <!-- Tambahkan kelas ms-auto di sini -->
+                    <ul class="navbar-nav">
+                        <li class="nav-item dropdown">
+                            <a style="font-weight: bold; color: #7fbf7f;" class="nav-link dropdown-toggle"
+                                href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
+                                aria-expanded="false">
+                                <i class="fas fa-user"></i> {{ session('user_name') }}
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-end bg-danger mt-2" aria-labelledby="navbarDropdown"
+                                style="max-width:200px; border-radius: 8px; box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);">
+                                <a class="dropdown-item text-light" href="{{ route('logout') }}"
                                     onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                                    <button class="btn btn-danger text-white">Logout</button>
+                                    Logout <i class="fas fa-sign-out-alt ms-2"></i>
                                 </a>
-                            </li>
-                        </ul>                        
-                        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                            @csrf
-                        </form>
-                    </li>
-                </ul>
+                            </div>
+                            <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                @csrf
+                            </form>
+                        </li>
+                    </ul>
+                </div>
             </div>
         @endif <!-- End of the conditional statement -->
     </nav>
+
+
 
 
 
@@ -442,17 +431,17 @@
             });
 
             function generateBarcode(text) {
-                var printWidth = 300; // Ubah sesuai dengan ukuran lebar gambar barcode (dalam piksel)
-                var printHeight = 200; // Ubah sesuai dengan ukuran tinggi gambar barcode (dalam piksel)
-                var paperWidth = '4in'; // Ukuran lebar kertas stiker (misalnya 4 inci)
-                var paperHeight = '6in'; // Ukuran tinggi kertas stiker (misalnya 6 inci)
+                var printWidth = 300;
+                var printHeight = 300;
+                var paperWidth = '8in';
+                var paperHeight = '10in';
 
                 var barcodeImage = document.createElement('img');
                 barcodeImage.src = 'https://barcode.tec-it.com/barcode.ashx?data=' + text + '&code=Code128&dpi=96';
-                barcodeImage.style.width = printWidth + 'px'; // Atur lebar gambar barcode
-                barcodeImage.style.height = 'auto'; // Biarkan tinggi menyesuaikan agar tidak terdistorsi
-                barcodeImage.style.display = 'block'; // Agar gambar di tengah
-                barcodeImage.style.margin = 'auto'; // Agar gambar di tengah
+                barcodeImage.style.width = printWidth + 'px';
+                barcodeImage.style.height = 'auto';
+                barcodeImage.style.display = 'block';
+                barcodeImage.style.margin = 'auto';
 
                 var barcodeDiv = document.getElementById('barcode');
                 barcodeDiv.innerHTML = '';
@@ -461,54 +450,126 @@
                 // Apply CSS for printing
                 var style = document.createElement('style');
                 style.textContent = `
-                @media print {
-                    body * {
-                        visibility: hidden;
-                    }
-                    #barcode, #barcode * {
-                        visibility: visible;
-                    }
-                    #barcode {
-                        position: absolute;
-                        left: 50%;
-                        top: 50%;
-                        transform: translate(-50%, -50%);
-                        width: ${printWidth}px;
-                        height: ${printHeight}px;
-                    }
-                    @page {
-                        size: ${paperWidth} ${paperHeight};
-                        margin: 0;
-                    }
-                }
-            `;
+        @media print {
+            body * {
+                visibility: hidden;
+            }
+            #barcode, #barcode * {
+                visibility: visible;
+            }
+            #barcode {
+                position: absolute;
+                left: 50%;
+                top: 80%;
+                transform: translate(-50%, -50%);
+                width: ${printWidth}px;
+                height: ${printHeight}px;
+            }
+            @page {
+                size: ${paperWidth} ${paperHeight};
+                margin: 0;
+            }
+        }
+    `;
                 document.head.appendChild(style);
 
                 setTimeout(function() {
-                    window.print();
-                }, 50);
+                    window.print(); 
+                }, 1000); 
             }
         });
     </script>
     {{-- end print barcode --}}
 
-    {{-- print detail --}}
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            document.getElementById('btn-print-detail').addEventListener('click', function() {
-                window.print(); // Trigger printing of the entire page
-            });
+{{-- print detail --}}
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        document.getElementById('btn-print-detail').addEventListener('click', function() {
+            var navbar = document.querySelector('.navbar');
+            if (navbar) {
+                navbar.style.visibility = 'hidden'; // Menyembunyikan navbar saat mencetak
+            }
+
+            var printButtonDetail = document.getElementById('btn-print-detail');
+            if (printButtonDetail) {
+                printButtonDetail.style.display = 'none'; // Menyembunyikan tombol cetak saat mencetak
+            }
+            var printButtonBarcode = document.getElementById('btn-print-barcode');
+            if (printButtonBarcode) {
+                printButtonBarcode.style.display = 'none'; // Menyembunyikan tombol cetak saat mencetak
+            }
+
+            var printStyle = document.createElement('style');
+            printStyle.textContent = `
+                @media print {
+                    @page {
+                        size: A4;
+                        margin: 0.5cm;
+                    }
+
+                    body {
+                        margin: 0;
+                        padding: 0;
+                        font-size: 60%;
+                    }
+
+                    .container {
+                        max-width: 100% !important;
+                        width: 90% !important;
+                        margin-top: 20px;
+                        margin-bottom: 20px;
+                    }
+
+                    .row, .col-md-6, .card, .card-header, .card-body, pre {
+                        width: 100% !important;
+                        margin: 0 !important;
+                        padding: 0 !important;
+                    }
+
+                    .card {
+                        margin: 10px 0; /* Jarak atas dan bawah antar card */
+                    }
+
+                    .navbar,
+                    #btn-print-detail,
+                    #btn-print-barcode {
+                        display: none !important;
+                    }
+                }
+            `;
+            document.head.appendChild(printStyle);
+
+            window.print();
+
+            // Mengembalikan tampilan elemen setelah pencetakan
+            setTimeout(function() {
+                if (navbar) {
+                    navbar.style.visibility = 'visible';
+                }
+                if (printButtonDetail) {
+                    printButtonDetail.style.display = 'block';
+                }
+                if (printButtonBarcode) {
+                    printButtonBarcode.style.display = 'block';
+                }
+                document.head.removeChild(printStyle);
+            }, 1000);
         });
-    </script>
+    });
+</script>
+
+
+
+
 
     {{-- Animasi --}}
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const elementsFadeIn = document.querySelectorAll('.fade-in');
             elementsFadeIn.forEach(element => {
-                element.classList.add('animate__animated', 'animate__fadeIn');
+                element.classList.add('animate_animated', 'animate_fadeIn');
                 element.addEventListener('animationend', () => {
-                    element.classList.remove('animate__animated', 'animate__fadeIn');
+                    element.classList.remove('animate_animated', 'animate_fadeIn');
                 });
                 element.style.opacity = 1;
                 element.style.transform = 'translateX(0)';
@@ -516,9 +577,9 @@
 
             const elementsFadeInLeft = document.querySelectorAll('.fade-in-left');
             elementsFadeInLeft.forEach(element => {
-                element.classList.add('animate__animated', 'animate__fadeInLeft');
+                element.classList.add('animate_animated', 'animate_fadeInLeft');
                 element.addEventListener('animationend', () => {
-                    element.classList.remove('animate__animated', 'animate__fadeInLeft');
+                    element.classList.remove('animate_animated', 'animate_fadeInLeft');
                 });
                 element.style.opacity = 1;
                 element.style.transform = 'translateX(0)';
@@ -526,18 +587,18 @@
 
             const elementsFadeInRight = document.querySelectorAll('.fade-in-right');
             elementsFadeInRight.forEach(element => {
-                element.classList.add('animate__animated', 'animate__fadeInRight');
+                element.classList.add('animate_animated', 'animate_fadeInRight');
                 element.addEventListener('animationend', () => {
-                    element.classList.remove('animate__animated', 'animate__fadeInRight');
+                    element.classList.remove('animate_animated', 'animate_fadeInRight');
                 });
                 element.style.opacity = 1;
                 element.style.transform = 'translateX(0)';
             });
 
             const navbarContent = document.querySelector('.navbar-content');
-            navbarContent.classList.add('animate__animated', 'animate__slideInFromTop');
+            navbarContent.classList.add('animate_animated', 'animate_slideInFromTop');
             navbarContent.addEventListener('animationend', () => {
-                navbarContent.classList.remove('animate__animated', 'animate__slideInFromTop');
+                navbarContent.classList.remove('animate_animated', 'animate_slideInFromTop');
             });
             navbarContent.style.opacity = 1;
             navbarContent.style.transform = 'translateY(0)';
@@ -559,7 +620,6 @@
         }
 
         generateCalendar = (month, year) => {
-
             let calendar_days = calendar.querySelector('.calendar-days')
             let calendar_header_year = calendar.querySelector('#year')
 
@@ -571,12 +631,11 @@
             if (!month) month = currDate.getMonth()
             if (!year) year = currDate.getFullYear()
 
-            let curr_month = `${month_names[month]}`
+            let curr_month = month_names[month]
             month_picker.innerHTML = curr_month
             calendar_header_year.innerHTML = year
 
             // get first day of month
-
             let first_day = new Date(year, month, 1)
 
             for (let i = 0; i <= days_of_month[month] + first_day.getDay() - 1; i++) {
@@ -584,10 +643,7 @@
                 if (i >= first_day.getDay()) {
                     day.classList.add('calendar-day-hover')
                     day.innerHTML = i - first_day.getDay() + 1
-                    day.innerHTML += `<span></span>
-                            <span></span>
-                            <span></span>
-                            <span></span>`
+                    day.innerHTML += `<span></span><span></span><span></span><span></span>`
                     if (i - first_day.getDay() + 1 === currDate.getDate() && year === currDate.getFullYear() &&
                         month === currDate.getMonth()) {
                         day.classList.add('curr-date')
@@ -644,6 +700,7 @@
             document.querySelector('body').classList.toggle('dark')
         }
     </script>
-    
+
 </body>
+
 </html>

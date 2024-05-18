@@ -12,8 +12,14 @@ class InstrumenController extends Controller
     {
         $query = Instrumen::query();
 
-        if ($request->has('nama_reagen_kit')) {
-            $query->where('nama_reagen_kit', 'like', '%' . $request->nama_reagen_kit . '%');
+        if ($request->has('instrumen')) {
+            $query->where('instrumen', 'like', '%' . $request->instrumen . '%');
+        }
+        if ($request->has('jumlah_instrumen')) {
+            $query->where('jumlah_instrumen', 'like', '%' . $request->jumlah_instrumen . '%');
+        }
+        if ($request->has('tanggal_t_maintenance')) {
+            $query->where('tanggal_t_maintenance', 'like', '%' . $request->tanggal_t_maintenance . '%');
         }
         $instrumen = $query->get();
         return view('auth.minstrumen', compact('instrumen'));

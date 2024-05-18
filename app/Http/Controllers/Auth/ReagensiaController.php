@@ -15,6 +15,12 @@ class ReagensiaController extends Controller
         if ($request->has('nama_reagen_kit')) {
             $query->where('nama_reagen_kit', 'like', '%' . $request->nama_reagen_kit . '%');
         }
+        if ($request->has('ketersediaan')) {
+            $query->where('ketersediaan', 'like', '%' . $request->ketersediaan . '%');
+        }
+        if ($request->has('tanggal_kadaluarsa')) {
+            $query->where('tanggal_kadaluarsa', 'like', '%' . $request->tanggal_kadaluarsa . '%');
+        }
         $reagensias = $query->get();
         return view('auth.inventarisreagensia', compact('reagensias'));
     }

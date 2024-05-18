@@ -10,11 +10,29 @@ use App\Models\Pemeriksaan;
 
 class KunjunganLabolaturiumController extends Controller
 {
-    public function showKunjunganForm()
+    public function showKunjunganForm(Request $request)
     {
-        $kunjunganLabolaturium = KunjunganLabolaturium::with('pemeriksaan.patients')->get();
+        $query = KunjunganLabolaturium::with('pemeriksaan.patients');
+
+        if ($request->has('nama')) {
+            $query->whereHas('pemeriksaan.patients', function ($q) use ($request) {
+                $q->where('nama', 'like', '%' . $request->nama . '%');
+            });
+        }
+
+        if ($request->has('tanggal_kunjungan')) {
+            $query->where('tanggal_kunjungan', 'like', '%' . $request->tanggal_kunjungan . '%');
+        }
+
+        if ($request->has('tanggal_selesai')) {
+            $query->where('tanggal_selesai', $request->tanggal_selesai);
+        }
+
+        $kunjunganLabolaturium = $query->get();
+
         return view('auth.kunjungan_labolaturium', compact('kunjunganLabolaturium'));
     }
+    
 
     // Create
     public function create()
@@ -26,11 +44,72 @@ class KunjunganLabolaturiumController extends Controller
     {
         $validatedData = $request->validate([
             'id_pemeriksaan' => 'required',
-            'tanggal_kunjungan' => 'required|date',
-            'tanggal_selesai' => 'required|date',
+            'tanggal_kunjungan' => 'required',
+            'tanggal_selesai' => 'required',
+            'EDTA' => 'nullable|string',
+            'Serum' => 'nullable|string',
+            'Citrate' => 'nullable|string',
+            'Urine' => 'nullable|string',
+            'Lainya' => 'nullable|string',
+            'kondisi_sampel' => 'nullable|string',
         ]);
         KunjunganLabolaturium::create($validatedData);
         return redirect()->route('kunjunganLabolaturium')->with('success', 'Pasien berhasil ditambahkan.');
+    }
+
+    // edit
+    public function edit($id)
+    {
+        $kunjungan = KunjunganLabolaturium::findOrFail($id);
+        return view('auth.editKunjungan', compact('kunjungan'));
+    }
+    public function update(Request $request, $id)
+    {
+        $validatedData = $request->validate([
+            'id_pemeriksaan' => 'required',
+            'tanggal_kunjungan' => 'required',
+            'tanggal_selesai' => 'required',
+            'EDTA' => 'nullable|string',
+            'Serum' => 'nullable|string',
+            'Citrate' => 'nullable|string',
+            'Urine' => 'nullable|string',
+            'Lainya' => 'nullable|string',
+            'kondisi_sampel' => 'nullable|string',
+        ]);
+
+        $kunjungan = KunjunganLabolaturium::findOrFail($id);
+        $kunjungan->update($validatedData);
+        return redirect()->route('kunjunganLabolaturium')->with('success', 'Data pasien berhasil diperbarui.');
+    }
+
+    // delete
+    public function destroy($id)
+    {
+        // Hapus data pasien dari database
+        $kunjungan = KunjunganLabolaturium::findOrFail($id);
+        $kunjungan->delete();
+
+        return redirect()->route('kunjunganLabolaturium')->with('success', 'Data pasien berhasil dihapus.');
+    }
+
+    // details
+    // Show Details Pemeriksaan
+    public function showKunjunganDetail($id)
+    {
+        // Ambil data pemeriksaan berdasarkan ID
+        $kunjungan = KunjunganLabolaturium::with('pemeriksaan')->findOrFail($id);
+
+        // Jika pemeriksaan ditemukan
+        if ($kunjungan) {
+            // Ambil nama pasien dari relasi patients
+            $nama_pasien = $kunjungan->pemeriksaan->nama;
+
+            // Kirim data pemeriksaan dan nama pasien ke view
+            return view('auth.detailKunjungan', compact('kunjungan', 'nama_pasien'));
+        } else {
+            // Jika pemeriksaan tidak ditemukan, redirect atau tampilkan pesan error
+            return redirect()->route('kunjunganLabolaturium')->with('error', 'Data pemeriksaan tidak ditemukan.');
+        }
     }
 
 }

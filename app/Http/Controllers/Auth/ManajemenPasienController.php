@@ -124,9 +124,6 @@ class ManajemenPasienController extends Controller
 
         return redirect()->route('mpasient')->with('success', 'Data pasien berhasil diperbarui.');
     }
-
-
-    // delete pasien
     public function destroy($id_pasien)
     {
         // Hapus data kunjungan terkait dari tabel kunjungan_labolaturium
@@ -143,8 +140,6 @@ class ManajemenPasienController extends Controller
 
         return redirect()->route('mpasient')->with('success', 'Data pasien berhasil dihapus beserta data kunjungan dan pemeriksaannya.');
     }
-    
-
 
 
     // show datadiri dan pemeriksaan
@@ -154,16 +149,41 @@ class ManajemenPasienController extends Controller
         $pemeriksaan = Pemeriksaan::where('id_pasien', $id_pasien)->first();
 
         if (!$pemeriksaan) {
-            $pemeriksaan = "Pasien belum melakukan pemeriksaan";
-            $tanggalKunjunganLab = null;
-            $tanggalSelesaiLab = null;
+            $pemeriksaanData = [
+                'tanggalKunjunganLab' => null,
+                'tanggalSelesaiLab' => null,
+                'edtaValue' => false,
+                'serumValue' => false,
+                'citrateValue' => false,
+                'urineValue' => false,
+                'lainyaValue' => false,
+                'kondisi_sampel' => null,
+            ];
         } else {
             $tanggalKunjunganLab = KunjunganLabolaturium::where('id_pemeriksaan', $pemeriksaan->id_periksa)->value('tanggal_kunjungan');
             $tanggalSelesaiLab = KunjunganLabolaturium::where('id_pemeriksaan', $pemeriksaan->id_periksa)->value('tanggal_selesai');
+            $edtaValue = KunjunganLabolaturium::where('id_pemeriksaan', $pemeriksaan->id_periksa)->value('EDTA');
+            $serumValue = KunjunganLabolaturium::where('id_pemeriksaan', $pemeriksaan->id_periksa)->value('Serum');
+            $citrateValue = KunjunganLabolaturium::where('id_pemeriksaan', $pemeriksaan->id_periksa)->value('Citrate');
+            $urineValue = KunjunganLabolaturium::where('id_pemeriksaan', $pemeriksaan->id_periksa)->value('Urine');
+            $lainyaValue = KunjunganLabolaturium::where('id_pemeriksaan', $pemeriksaan->id_periksa)->value('Lainya');
+            $kondisi_sampel = KunjunganLabolaturium::where('id_pemeriksaan', $pemeriksaan->id_periksa)->value('kondisi_sampel');
+
+            $pemeriksaanData = [
+                'tanggalKunjunganLab' => $tanggalKunjunganLab,
+                'tanggalSelesaiLab' => $tanggalSelesaiLab,
+                'edtaValue' => $edtaValue,
+                'serumValue' => $serumValue,
+                'citrateValue' => $citrateValue,
+                'urineValue' => $urineValue,
+                'lainyaValue' => $lainyaValue,
+                'kondisi_sampel' => $kondisi_sampel,
+            ];
         }
 
-        return view('auth.datadiri', compact('patient', 'pemeriksaan', 'tanggalKunjunganLab', 'tanggalSelesaiLab'));
+        return view('auth.datadiri', compact('patient', 'pemeriksaan', 'pemeriksaanData'));
     }
+
 
 
 }

@@ -6,16 +6,32 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Patient;
 use App\Models\Pemeriksaan;
+use App\Models\KunjunganLabolaturium;
 use Illuminate\Support\Str;
 
 class PemeriksaanController extends Controller
 {
     public function showPemeriksaanForm(Request $request)
     {
-        $pemeriksaans = Pemeriksaan::with('patients')->get();
+        $query = Pemeriksaan::query()->with('patients');
+
+        if ($request->has('nama')) {
+            $query->whereHas('patients', function ($q) use ($request) {
+                $q->where('nama', 'like', '%' . $request->nama . '%');
+            });
+        }
+        if ($request->has('rujukan')) {
+            $query->where('rujukan_pemeriksaan', 'like', '%' . $request->rujukan . '%');
+        }
+        if ($request->has('tanggal')) {
+            $query->where('tanggal_pemeriksaan', $request->tanggal);
+        }
+
+        $pemeriksaans = $query->get();
 
         return view('auth.pemeriksaan', compact('pemeriksaans'));
     }
+    
 
 
 
@@ -60,10 +76,25 @@ class PemeriksaanController extends Controller
             'rujukan_pemeriksaan' => 'required',
             'rincian_pemeriksaan' => 'required',
             'jenis_pembayaran' => 'required',
+            'WBC' => 'nullable|numeric',
+            'RBC' => 'nullable|numeric',
+            'PLT' => 'nullable|numeric',
+            'HGB' => 'nullable|numeric',
+            'HTM' => 'nullable|numeric',
+            'Neu' => 'nullable|numeric',
+            'Eos' => 'nullable|numeric',
+            'Bas' => 'nullable|numeric',
+            'Lym' => 'nullable|numeric',
+            'Mon' => 'nullable|numeric',
+            'MCV' => 'nullable|numeric',
+            'MCH' => 'nullable|numeric',
+            'MCHC' => 'nullable|numeric',
         ]);
+    
         Pemeriksaan::create($validatedData);
         return redirect()->route('pemeriksaan')->with('success', 'Pasien berhasil ditambahkan.');
     }
+    
 
     // edit pemeriksaan
     public function edit($id_periksa)
@@ -80,6 +111,20 @@ class PemeriksaanController extends Controller
             'rujukan_pemeriksaan' => 'required',
             'rincian_pemeriksaan' => 'required',
             'jenis_pembayaran' => 'required',
+            'WBC' => 'nullable|numeric',
+            'RBC' => 'nullable|numeric',
+            'PLT' => 'nullable|numeric',
+            'HGB' => 'nullable|numeric',
+            'HTM' => 'nullable|numeric',
+            'Neu' => 'nullable|numeric',
+            'Eos' => 'nullable|numeric',
+            'Bas' => 'nullable|numeric',
+            'Lym' => 'nullable|numeric',
+            'Mon' => 'nullable|numeric',
+            'MCV' => 'nullable|numeric',
+            'MCH' => 'nullable|numeric',
+            'MCHC' => 'nullable|numeric',
+
         ]);
 
         $pemeriksaans = Pemeriksaan::findOrFail($id_periksa);
@@ -91,12 +136,18 @@ class PemeriksaanController extends Controller
     // Delete periksa
     public function destroy($id_periksa)
     {
-        // Hapus data pasien dari database
+        // Find the pemeriksaan record
         $pemeriksaans = Pemeriksaan::findOrFail($id_periksa);
+
+        // Delete related records from kunjungan_labolaturium table
+        KunjunganLabolaturium::where('id_pemeriksaan', $id_periksa)->delete();
+
+        // Delete the pemeriksaan record
         $pemeriksaans->delete();
 
         return redirect()->route('pemeriksaan')->with('success', 'Data pasien berhasil dihapus.');
     }
+
 
     // Show Details Pemeriksaan
 public function showPemeriksaanDetails($id_periksa)
