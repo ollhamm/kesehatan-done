@@ -24,8 +24,8 @@ class PemeriksaanController extends Controller
         if ($request->has('rujukan')) {
             $query->where('rujukan_pemeriksaan', 'like', '%' . $request->rujukan . '%');
         }
-        if ($request->has('tanggal')) {
-            $query->where('tanggal_pemeriksaan', $request->tanggal);
+        if ($request->has('tanggal_pemeriksaan')) {
+            $query->where('tanggal_pemeriksaan', $request->tanggal_pemeriksaan);
         }
 
         $pemeriksaans = $query->get();
@@ -96,7 +96,7 @@ class PemeriksaanController extends Controller
         ]);
     
         Pemeriksaan::create($validatedData);
-        return redirect()->route('pemeriksaan')->with('success', 'Pasien berhasil ditambahkan.');
+        return redirect()->route('pemeriksaan')->with('success', 'Patient examination data Created is successfully');
     }
     
 
@@ -134,7 +134,7 @@ class PemeriksaanController extends Controller
         $pemeriksaans = Pemeriksaan::findOrFail($id_periksa);
         $pemeriksaans->update($validatedData);
 
-        return redirect()->route('pemeriksaan')->with('success', 'Patient examination data is successfully created');
+        return redirect()->route('pemeriksaan')->with('success', 'Patient examination data Updated is successfully');
     }
 
     // Delete periksa
@@ -146,7 +146,6 @@ class PemeriksaanController extends Controller
         // Delete related records from kunjungan_labolaturium table
         KunjunganLabolaturium::where('id_pemeriksaan', $id_periksa)->delete();
 
-        // Delete the pemeriksaan record
         $pemeriksaans->delete();
 
         return redirect()->route('pemeriksaan')->with('success', 'Check Successfully Deleted');

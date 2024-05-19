@@ -346,7 +346,6 @@
 
         .alamat {
             max-width: 200px;
-            /* Sesuaikan dengan lebar maksimum kolom alamat */
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
@@ -375,7 +374,7 @@
 </head>
 
 <body style="background-color: #e5f2e5">
-    <nav class="navbar navbar-expand-lg navbar-light bg-light px-4 navbar-content" style="background-color: #b2d8b2">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light px-4 navbar-content" style="background-color: #c9f7c9">
         <a class="navbar-brand" href="/">
             <span style="font-weight: bold; color: #7fbf7f;"> <i class="fa-solid fa-notes-medical"></i> RSU Cinta
                 Kasih</span>

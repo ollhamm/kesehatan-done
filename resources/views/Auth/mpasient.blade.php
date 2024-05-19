@@ -61,7 +61,7 @@
                     @foreach ($patients as $patient)
                         <tr>
                             <td>{{ $no++ }}</td>
-                            <td>{{ $patient->nama }}</td>
+                            <td class="alamat">{{ $patient->nama }}</td>
                             <td>{{ $patient->umur }}</td>
                             <td>{{ $patient->jenis_kelamin }}</td>
                             <td class="alamat">{{ $patient->alamat }}</td>
@@ -245,7 +245,7 @@
                         <div class="mb-3">
                             <label for="nomor_asuransi" class="form-label">Nomor Asuransi:</label>
                             <input type="text" class="form-control" id="nomor_asuransi" name="nomor_asuransi"
-                                value="{{ $patient->nomor_asuransi }}" required>
+                                value="{{ $patient->nomor_asuransi }}">
                         </div>
                         <div class="mb-3">
                             <label for="status" class="form-label">Status:</label>

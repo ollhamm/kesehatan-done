@@ -57,7 +57,7 @@
                         @foreach ($reagensias as $reagensia)
                             <tr>
                                 <td>{{ $no++ }}</td>
-                                <td >
+                                <td class="alamat">
                                     @if ($reagensia->ketersediaan == 0)
                                         <i class="fa-solid fa-triangle-exclamation" style="color: red;"></i>
                                     @endif

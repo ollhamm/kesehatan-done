@@ -48,7 +48,6 @@ public function login(Request $request)
     $credentials = $request->only('email', 'password');
 
     if (Auth::attempt($credentials)) {
-        // Simpan nama pengguna 
         $request->session()->put('user_name', Auth::user()->name);
 
         return redirect()->route('home');

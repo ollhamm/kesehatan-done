@@ -45,10 +45,10 @@
                     <thead class="thead-light">
                         <tr class="text-sm">
                             <th>No</th>
-                            <th>Instrumen</th>
+                            <th class="alamat">Instrumen</th>
                             <th>Jumlah Instrumen</th>
                             <th class="text-center">Tanggal <br/> Maintenance Terakhir</th>
-                            <th>Deskripsi</th>
+                            <th >Deskripsi</th>
                             <th class="text-center">Tanggal <br/> Maintenance Berikutnya</th>
                             <th class="text-center">Aksi</th>
                         </tr>
@@ -58,10 +58,10 @@
                         @foreach ($instrumens as $instrumen)
                             <tr>
                                 <td>{{ $no++ }}</td>
-                                <td>{{ $instrumen->instrumen }}</td>
+                                <td class="alamat">{{ $instrumen->instrumen }}</td>
                                 <td>{{ $instrumen->jumlah_instrumen }}</td>
                                 <td class="text-center">{{ $instrumen->tanggal_t_maintenance }}</td>
-                                <td>{{ $instrumen->deskripsi }}</td>
+                                <td class="alamat">{{ $instrumen->deskripsi }}</td>
                                 <td class="text-center">{{ $instrumen->tanggal_b_maintenance }}</td>
                                 <td class="text-center">
                                     <button type="button" class="btn btn-warning text-light btn-sm mr-2" data-bs-toggle="modal" data-bs-target="#editInstrumenModal{{ $instrumen->id_instrumen }}"><i class="fa-solid fa-pen"></i></button>

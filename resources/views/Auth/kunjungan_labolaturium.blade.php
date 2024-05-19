@@ -60,7 +60,7 @@
                         @foreach ($kunjunganLabolaturium as $kunjungan)
                             <tr>
                                 <td>{{ $no++ }}</td>
-                                <td>{{ $kunjungan->pemeriksaan->patients->nama }}</td>
+                                <td class="alamat">{{ $kunjungan->pemeriksaan->patients->nama }}</td>
                                 <td>{{ $kunjungan->pemeriksaan->tanggal_pemeriksaan }}</td>
                                 <td class="text-danger">{{ $kunjungan->tanggal_kunjungan }}</td>
                                 <td class="text-success">{{ $kunjungan->tanggal_selesai }}</td>

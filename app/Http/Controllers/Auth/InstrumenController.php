@@ -68,7 +68,6 @@ class InstrumenController extends Controller
         }
 
         // Delete Instrumen
-            // Delete Reagensia
     public function destroy($id_instrumen)
     {
         // Hapus data pasien dari database
