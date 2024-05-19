@@ -13,7 +13,8 @@ class PemeriksaanController extends Controller
 {
     public function showPemeriksaanForm(Request $request)
     {
-        $query = Pemeriksaan::query()->with('patients');
+        $query = Pemeriksaan::with('patients');
+
 
         if ($request->has('nama')) {
             $query->whereHas('patients', function ($q) use ($request) {
@@ -29,7 +30,9 @@ class PemeriksaanController extends Controller
 
         $pemeriksaans = $query->get();
 
-        return view('auth.pemeriksaan', compact('pemeriksaans'));
+
+        $pemeriksaan = Patient::all();
+        return view('auth.pemeriksaan', compact('pemeriksaans', 'pemeriksaan'));
     }
     
 
@@ -72,9 +75,10 @@ class PemeriksaanController extends Controller
         $validatedData = $request->validate([
             'id_pasien' => 'required',
             'tanggal_pemeriksaan' => 'required',
+            'amnesis_dokter' => 'required',
             'unit_pemeriksaan' => 'required',
+            'verifikator' => 'required',
             'rujukan_pemeriksaan' => 'required',
-            'rincian_pemeriksaan' => 'required',
             'jenis_pembayaran' => 'required',
             'WBC' => 'nullable|numeric',
             'RBC' => 'nullable|numeric',
@@ -108,8 +112,8 @@ class PemeriksaanController extends Controller
             'id_pasien' => 'required',
             'tanggal_pemeriksaan' => 'required',
             'unit_pemeriksaan' => 'required',
+            'verifikator' => 'required',
             'rujukan_pemeriksaan' => 'required',
-            'rincian_pemeriksaan' => 'required',
             'jenis_pembayaran' => 'required',
             'WBC' => 'nullable|numeric',
             'RBC' => 'nullable|numeric',
@@ -130,7 +134,7 @@ class PemeriksaanController extends Controller
         $pemeriksaans = Pemeriksaan::findOrFail($id_periksa);
         $pemeriksaans->update($validatedData);
 
-        return redirect()->route('pemeriksaan')->with('success', 'Data pasien berhasil diperbarui.');
+        return redirect()->route('pemeriksaan')->with('success', 'Patient examination data is successfully created');
     }
 
     // Delete periksa
@@ -145,7 +149,7 @@ class PemeriksaanController extends Controller
         // Delete the pemeriksaan record
         $pemeriksaans->delete();
 
-        return redirect()->route('pemeriksaan')->with('success', 'Data pasien berhasil dihapus.');
+        return redirect()->route('pemeriksaan')->with('success', 'Check Successfully Deleted');
     }
 
 

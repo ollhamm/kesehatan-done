@@ -29,17 +29,16 @@ class KunjunganLabolaturiumController extends Controller
         }
 
         $kunjunganLabolaturium = $query->get();
+        $pemeriksaan = Pemeriksaan::all();
 
-        return view('auth.kunjungan_labolaturium', compact('kunjunganLabolaturium'));
+        return view('auth.kunjungan_labolaturium', compact('kunjunganLabolaturium', 'pemeriksaan'));
     }
+    
+    
     
 
     // Create
-    public function create()
-    {
-        $kunjungan = Pemeriksaan::with('patients')->get();
-        return view('auth.createKunjunganLab', compact('kunjungan'));
-    }
+   
     public function store(Request $request)
     {
         $validatedData = $request->validate([
@@ -54,14 +53,14 @@ class KunjunganLabolaturiumController extends Controller
             'kondisi_sampel' => 'nullable|string',
         ]);
         KunjunganLabolaturium::create($validatedData);
-        return redirect()->route('kunjunganLabolaturium')->with('success', 'Pasien berhasil ditambahkan.');
+        return redirect()->route('kunjunganLabolaturium')->with('success', 'LAB Visit Successfully Created');
     }
 
     // edit
     public function edit($id)
     {
-        $kunjungan = KunjunganLabolaturium::findOrFail($id);
-        return view('auth.editKunjungan', compact('kunjungan'));
+        $kunjungans = KunjunganLabolaturium::findOrFail($id);
+        return view('auth.editKunjungan', compact('kunjungans'));
     }
     public function update(Request $request, $id)
     {
@@ -79,7 +78,7 @@ class KunjunganLabolaturiumController extends Controller
 
         $kunjungan = KunjunganLabolaturium::findOrFail($id);
         $kunjungan->update($validatedData);
-        return redirect()->route('kunjunganLabolaturium')->with('success', 'Data pasien berhasil diperbarui.');
+        return redirect()->route('kunjunganLabolaturium')->with('success', 'LAB Visit Data Successfully Updated');
     }
 
     // delete
@@ -89,7 +88,7 @@ class KunjunganLabolaturiumController extends Controller
         $kunjungan = KunjunganLabolaturium::findOrFail($id);
         $kunjungan->delete();
 
-        return redirect()->route('kunjunganLabolaturium')->with('success', 'Data pasien berhasil dihapus.');
+        return redirect()->route('kunjunganLabolaturium')->with('success', 'LAB Visit Data Deleted Successfully');
     }
 
     // details
@@ -99,15 +98,11 @@ class KunjunganLabolaturiumController extends Controller
         // Ambil data pemeriksaan berdasarkan ID
         $kunjungan = KunjunganLabolaturium::with('pemeriksaan')->findOrFail($id);
 
-        // Jika pemeriksaan ditemukan
         if ($kunjungan) {
-            // Ambil nama pasien dari relasi patients
             $nama_pasien = $kunjungan->pemeriksaan->nama;
 
-            // Kirim data pemeriksaan dan nama pasien ke view
             return view('auth.detailKunjungan', compact('kunjungan', 'nama_pasien'));
         } else {
-            // Jika pemeriksaan tidak ditemukan, redirect atau tampilkan pesan error
             return redirect()->route('kunjunganLabolaturium')->with('error', 'Data pemeriksaan tidak ditemukan.');
         }
     }

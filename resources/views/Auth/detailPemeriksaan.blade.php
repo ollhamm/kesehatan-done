@@ -3,7 +3,7 @@
 @section('content')
     <div class="container">
         <div class="row justify-content-center mt-4">
-            <div class="col-md-8">
+            <div class="col-md-12">
                 <div class="card">
                     <div class="card-header text-center" style="font-weight: bold; background-color: #7fbf7f; color: white;">
                         Detail Pemeriksaan <br/>
@@ -15,6 +15,7 @@
                                 <pre class="small-text">
 Nama Pasien : <strong>{{ $pemeriksaan->patients->nama }}</strong>
 Tanggal     : <strong>{{ $pemeriksaan->tanggal_pemeriksaan }}</strong>
+Tanggal     : <strong>{{ $pemeriksaan->amnesis_dokter }}</strong>
 Unit        : <strong>{{ $pemeriksaan->unit_pemeriksaan }}</strong>
 Rujukan     : <strong>{{ $pemeriksaan->rujukan_pemeriksaan }}</strong>
 Rincian     : <strong>{{ $pemeriksaan->rincian_pemeriksaan }}</strong>

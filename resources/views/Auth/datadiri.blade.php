@@ -25,7 +25,7 @@
 Nama                 : <strong>{{ $patient->nama }}</strong>
 Umur                 : <strong>{{ $patient->umur }} tahun</strong>
 Jenis Kelamin        : <strong>{{ $patient->jenis_kelamin }}</strong>
-Tempat Tanggal Lahir : <strong>{{ $patient->tanggal_lahir }}</strong>
+Tempat Tanggal Lahir : <strong>{{ $patient->tempat_dan_tanggal_lahir }}</strong>
 Alamat               : <strong class="alamat">{{ $patient->alamat }}</strong>
 Jenis Asuransi       : <strong>{{ $patient->jenis_asuransi }}</strong>
 Nomor Asuransi       : <strong>{{ $patient->nomor_asuransi }}</strong>
@@ -132,26 +132,26 @@ Status               : <strong style="color: {{ $patient->status == 'Aktif' ? 'g
                     <div class="card-body">
                         @if ($pemeriksaan && is_object($pemeriksaan))
                             <pre>
-<strong>{{ $pemeriksaan->rincian_pemeriksaan }}</strong>
+<strong>{{ $pemeriksaan->amnesis_dokter }}</strong>
                             </pre>
                         @else
                             <p>Pasien belum melakukan pemeriksaan!</p>
                         @endif
                     </div>
                 </div>
-                <div class="card border-0 mt-2" style="height: 83%">
+                <div class="card border-0 mt-2" style="height: 84%">
                     <div class="card-header" style="font-weight: bold; background-color: #7fbf7f; color: white;">
                         Tindakan Pelayanan Laboratorium :
                     </div>
                     <div class="card-body">
                         @if ($pemeriksaan && is_object($pemeriksaan))
                             <pre>
-Nama Pasien      : <strong>{{ $pemeriksaan->patients->nama }}</strong>
 Tanggal          : <strong>{{ $pemeriksaan->tanggal_pemeriksaan }}</strong>
 Unit             : <strong>{{ $pemeriksaan->unit_pemeriksaan }}</strong>
+Verifikator      : <strong>{{ $pemeriksaan->verifikator }}</strong>
 Rujukan Dari     : <strong>{{ $pemeriksaan->rujukan_pemeriksaan }}</strong>
-Rincian Tindakan : <strong>{{ $pemeriksaan->rincian_pemeriksaan }}</strong>
-Jenis Pembayaran : <strong>{{ $pemeriksaan->jenis_pembayaran }}</strong>
+Jenis Pembayaran : <strong>{{ $pemeriksaan->jenis_pembayaran }}</strong><br/>
+Rincian Tindakan :
 
 <table class="table">
     <thead>
@@ -202,12 +202,12 @@ Jenis Pembayaran : <strong>{{ $pemeriksaan->jenis_pembayaran }}</strong>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="row justify-content-end mb-5 ml-3">
-            <div class="col-md-auto ml-auto">
-                <a id="btn-print-detail" class="btn btn-secondary">
-                    <i class="fa-solid fa-print"></i> Print Detail
-                </a>
+            <div class="row justify-content-end mt-5 ml-3">
+                <div class="col-md-auto ml-auto">
+                    <a id="btn-print-detail" class="btn btn-secondary">
+                        <i class="fa-solid fa-print"></i> Print Detail
+                    </a>
+                </div>
             </div>
         </div>
     </div>

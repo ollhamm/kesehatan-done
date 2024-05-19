@@ -21,45 +21,40 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/home', [AdminController::class, 'showHomeForm'])->name('home');
     Route::get('/', [ManajemenPasienController::class, 'showHomeForm'])->name('home');
     Route::get('/manajementpasien', [ManajemenPasienController::class, 'showManajementForm'])->name('mpasient');
-    Route::get('/manajementpasien/create', [ManajemenPasienController::class, 'create'])->name('mpasient.creatempasient');
-    Route::post('/manajementpasien/store', [ManajemenPasienController::class, 'store'])->name('mpasient.storempasient');
-    Route::get('/manajementpasien/{id}/edit', [ManajemenPasienController::class, 'edit'])->name('mpasient.editmpasient');
-    Route::put('/manajementpasien/{id}/', [ManajemenPasienController::class, 'update'])->name('mpasient.updatempasient');
-    Route::delete('/manajementpasien/{id}/destroy', [ManajemenPasienController::class, 'destroy'])->name('mpasient.destroympasient');
+    Route::post('/manajementpasien/store', [ManajemenPasienController::class, 'store'])->name('mpasient.store');
+    Route::get('/manajementpasien/{id_pasien}/edit', [ManajemenPasienController::class, 'edit'])->name('mpasient.edit');
+    Route::put('/manajementpasien/{id_pasien}', [ManajemenPasienController::class, 'update'])->name('mpasient.update');
+    Route::delete('/manajementpasien/{id_pasien}/destroy', [ManajemenPasienController::class, 'destroy'])->name('mpasient.destroy');
     Route::get('/patient/details/{id_pasien}', [ManajemenPasienController::class, 'showPatientDetailsAndPemeriksaan'])->name('patient.details.pemeriksaan');
 
 
     // Pemeriksaan
     Route::get('/patient/pemeriksaan', [PemeriksaanController::class, 'showPemeriksaanForm'])->name('pemeriksaan');
-    Route::get('/patient/pemeriksaan/create', [PemeriksaanController::class, 'create'])->name('pemeriksaan.create');
     Route::post('/patient/pemeriksaan/store', [PemeriksaanController::class, 'store'])->name('pemeriksaan.store');
-    Route::get('/pemeriksaan/{id}/edit', [PemeriksaanController::class, 'edit'])->name('pemeriksaan.edit');
-    Route::put('/pemeriksaan/{id}/update', [PemeriksaanController::class, 'update'])->name('pemeriksaan.update');
+    Route::get('/pemeriksaan/{id_periksa}/edit', [PemeriksaanController::class, 'edit'])->name('pemeriksaan.edit');
+    Route::put('/pemeriksaan/{id_periksa}', [PemeriksaanController::class, 'update'])->name('pemeriksaan.update');
     Route::delete('/pemeriksaan/{id}/destroy', [PemeriksaanController::class, 'destroy'])->name('pemeriksaan.destroy');
     Route::get('/pemeriksaan/{id}/details', [PemeriksaanController::class, 'showPemeriksaanDetails'])->name('pemeriksaan.details');
 
     // Reagensia
     Route::get('/reagensia', [ReagensiaController::class, 'showReagensiaForm'])->name('reagensia');
-    Route::get('/reagensia/create', [ReagensiaController::class, 'create'])->name('reagensia.create');
     Route::post('/reagensia/store', [ReagensiaController::class, 'store'])->name('reagensia.store');
     Route::get('/reagensia/{id}/edit', [ReagensiaController::class, 'edit'])->name('reagensia.edit');
     Route::put('/reagensia/{id}/update', [ReagensiaController::class, 'update'])->name('reagensia.update');
     Route::delete('/reagensia/{id}/destroy', [ReagensiaController::class, 'destroy'])->name('reagensia.destroy');
     Route::get('/reagensia/{id}/details', [ReagensiaController::class, 'showReagenDetail'])->name('reagensia.details');
 
+    // instrumen
     Route::get('/instrumen', [InstrumenController::class, 'showInstrumenForm'])->name('instrumen');
     Route::get('/instrumen/create', [InstrumenController::class, 'create'])->name('instrumen.create');
     Route::post('/instrumen/store', [InstrumenController::class, 'store'])->name('instrumen.store');
-    Route::get('/instrumen/{id}/edit', [InstrumenController::class, 'edit'])->name('instrumen.edit');
-    Route::put('/instrumen/{id}/update', [InstrumenController::class, 'update'])->name('instrumen.update');
-    Route::delete('/instrumen/{id}/destroy', [InstrumenController::class, 'destroy'])->name('instrumen.destroy');
-    Route::get('/instrumen/{id}/details', [InstrumenController::class, 'showInstrumenDetail'])->name('instrumen.details');
+    Route::put('/instrumen/{id_instrumen}/update', [InstrumenController::class, 'update'])->name('instrumen.update');
+    Route::delete('/instrumen/{id_instrumen}/destroy', [InstrumenController::class, 'destroy'])->name('instrumen.destroy');
+    Route::get('/instrumen/{id_instrumen}/details', [InstrumenController::class, 'showInstrumenDetail'])->name('instrumen.details');
 
     // kunjungan Labolaturium
     Route::get('/kunjungan-labolaturium', [KunjunganLabolaturiumController::class, 'showKunjunganForm'])->name('kunjunganLabolaturium');
-    Route::get('/kunjungan-labolaturium/create', [KunjunganLabolaturiumController::class, 'create'])->name('kunjunganLabolaturium.create');
     Route::post('/kunjungan-labolaturium/store', [KunjunganLabolaturiumController::class, 'store'])->name('kunjunganLabolaturium.store');
-    Route::get('/kunjungan-labolaturium/{id}/edit', [KunjunganLabolaturiumController::class, 'edit'])->name('kunjunganLabolaturium.edit');
     Route::put('/kunjungan-labolaturium/{id}/update', [KunjunganLabolaturiumController::class, 'update'])->name('kunjunganLabolaturium.update');
     Route::delete('/kunjungan-labolaturium/{id}/destroy', [KunjunganLabolaturiumController::class, 'destroy'])->name('kunjunganLabolaturium.destroy');
     Route::get('/kunjungan-labolaturium/{id}/details', [KunjunganLabolaturiumController::class, 'showKunjunganDetail'])->name('kunjunganLabolaturium.details');

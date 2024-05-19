@@ -12,7 +12,6 @@ use Illuminate\Support\Str;
 
 class ManajemenPasienController extends Controller
 {
-
     public function getTotalPatientsCount()
     {
         try {
@@ -22,7 +21,6 @@ class ManajemenPasienController extends Controller
             return 0;
         }
     }
-
 
     // Home
     public function showHomeForm(Request $request)
@@ -36,8 +34,6 @@ class ManajemenPasienController extends Controller
         return view('auth.home', compact('patients', 'totalPatientsCount', 'reagensias'));
     }
 
-
-
     // manajement pasien view
     public function showManajementForm(Request $request)
     {
@@ -49,15 +45,16 @@ class ManajemenPasienController extends Controller
         if ($request->has('rujukan')) {
             $query->where('rujukan', 'like', '%' . $request->rujukan . '%');
         }
-        if ($request->has('tanggal_lahir')) {
-            $query->where('tanggal_lahir', 'like', '%' . $request->tanggal_lahir . '%');
+        if ($request->has('tempat_dan_tanggal_lahir')) {
+            $query->where('tempat_dan_tanggal_lahir', 'like', '%' . $request->tempat_dan_tanggal_lahir . '%');
         }
 
         $patients = $query->get();
-        return view('auth.mpasient', compact('patients'));
+        $defaultRM = $this->generateRMCode();
+        return view('auth.mpasient', compact('patients', 'defaultRM'));
     }
 
-    // genereate kode P00
+    // generate kode P00
     private function generateRMCode()
     {
         $latestRM = Patient::latest()->value('rm');
@@ -83,19 +80,18 @@ class ManajemenPasienController extends Controller
             'nama' => 'required',
             'umur' => 'required|numeric',
             'jenis_kelamin' => 'required',
-            'tanggal_lahir' => 'required',
+            'tempat_dan_tanggal_lahir' => 'required',
             'alamat' => 'required',
             'rm' => 'required',
             'rujukan' => 'required',
             'jenis_asuransi' => 'required',
-            'nomor_asuransi' => 'required',
+            'nomor_asuransi' => 'nullable|numeric',
             'status' => 'required',
         ]);
 
         Patient::create($validatedData);
-        return redirect()->route('mpasient')->with('success', 'Pasien berhasil ditambahkan.');
+        return redirect()->route('mpasient')->with('success', 'The check has been made successfully!');
     }
-
 
     // edit pasien
     public function edit($id_pasien)
@@ -110,20 +106,21 @@ class ManajemenPasienController extends Controller
             'nama' => 'required',
             'umur' => 'required|numeric',
             'jenis_kelamin' => 'required',
-            'tanggal_lahir' => 'required',
+            'tempat_dan_tanggal_lahir' => 'required',
             'alamat' => 'required',
             'rm' => 'required',
             'rujukan' => 'required',
             'jenis_asuransi' => 'required',
-            'nomor_asuransi' => 'required',
+            'nomor_asuransi' => 'nullable|numeric',
             'status' => 'required',
         ]);
 
         $patient = Patient::findOrFail($id_pasien);
         $patient->update($validatedData);
 
-        return redirect()->route('mpasient')->with('success', 'Data pasien berhasil diperbarui.');
+        return redirect()->route('mpasient')->with('success', 'Data Patient Updated Successfully');
     }
+
     public function destroy($id_pasien)
     {
         // Hapus data kunjungan terkait dari tabel kunjungan_labolaturium
@@ -138,9 +135,8 @@ class ManajemenPasienController extends Controller
         $patient = Patient::findOrFail($id_pasien);
         $patient->delete();
 
-        return redirect()->route('mpasient')->with('success', 'Data pasien berhasil dihapus beserta data kunjungan dan pemeriksaannya.');
+        return redirect()->route('mpasient')->with('success', 'Patient Successfully Deleted');
     }
-
 
     // show datadiri dan pemeriksaan
     public function showPatientDetailsAndPemeriksaan($id_pasien)
@@ -183,11 +179,4 @@ class ManajemenPasienController extends Controller
 
         return view('auth.datadiri', compact('patient', 'pemeriksaan', 'pemeriksaanData'));
     }
-
-
-
 }
-
-
-
-

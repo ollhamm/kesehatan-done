@@ -21,8 +21,8 @@ class InstrumenController extends Controller
         if ($request->has('tanggal_t_maintenance')) {
             $query->where('tanggal_t_maintenance', 'like', '%' . $request->tanggal_t_maintenance . '%');
         }
-        $instrumen = $query->get();
-        return view('auth.minstrumen', compact('instrumen'));
+        $instrumens = $query->get();
+        return view('auth.minstrumen', compact('instrumens'));
     }
 
     // Create Instrumen
@@ -41,7 +41,7 @@ class InstrumenController extends Controller
             ]);
     
             Instrumen::create($validatedData);
-            return redirect()->route('instrumen')->with('success', 'Data berhasil ditambahkan.');
+        return redirect()->route('instrumen')->with('success', 'Instrument Data Created Successfully');
         }
 
         // Edit Instrumen
@@ -63,8 +63,8 @@ class InstrumenController extends Controller
     
             $instrumen = Instrumen::findOrFail($id_instrumen);
             $instrumen->update($validatedData);
-    
-            return redirect()->route('instrumen')->with('success', 'Data pasien berhasil diperbarui.');
+
+        return redirect()->route('instrumen')->with('success', 'Instrument Data Updated Successfully');
         }
 
         // Delete Instrumen
@@ -75,7 +75,7 @@ class InstrumenController extends Controller
         $instrumen = Instrumen::findOrFail($id_instrumen);
         $instrumen->delete();
 
-        return redirect()->route('instrumen')->with('success', 'Data pasien berhasil dihapus.');
+        return redirect()->route('instrumen')->with('success', 'Instrument Data Deleted Successfully');
     }
 
         // Details Instrumen

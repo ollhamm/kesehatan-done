@@ -3,7 +3,7 @@
 @section('content')
     <div class="row justify-content-center py-5">
         <div class="col-md-8">
-            <div class="card">
+            <div class="card border-0">
                 <div class="card-body">
                     <div class="row">
                         {{-- Konten Kiri start --}}

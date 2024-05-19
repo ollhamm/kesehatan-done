@@ -13,9 +13,10 @@ class Pemeriksaan extends Model
     protected $fillable = [
         'id_pasien',
         'tanggal_pemeriksaan',
+        'amnesis_dokter',
         'unit_pemeriksaan',
+        'verifikator',
         'rujukan_pemeriksaan',
-        'rincian_pemeriksaan',
         'jenis_pembayaran',
         'WBC',
         'RBC',

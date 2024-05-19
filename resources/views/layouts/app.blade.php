@@ -699,8 +699,23 @@
             document.querySelector('body').classList.toggle('light')
             document.querySelector('body').classList.toggle('dark')
         }
+    </script> 
+    <script>
+        // Fungsi untuk menampilkan popup notifikasi
+        function showSuccessAlert() {
+            const alert = document.getElementById('successAlert');
+            alert.classList.remove('d-none');
+            setTimeout(() => {
+                alert.classList.add('d-none');
+            }, 3000); // Waktu dalam milidetik (5 detik)
+        }
+    
+        // Panggil fungsi saat halaman dimuat
+        document.addEventListener('DOMContentLoaded', function () {
+            showSuccessAlert();
+        });
     </script>
-
+    
+    
 </body>
-
 </html>

@@ -16,7 +16,7 @@ class Patient extends Model
         'umur',
         'jenis_kelamin',
         'alamat',
-        'tanggal_lahir',
+        'tempat_dan_tanggal_lahir',
         'rm',
         'rujukan',
         'jenis_asuransi',
