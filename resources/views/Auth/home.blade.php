@@ -11,7 +11,7 @@
                 <div class="row rounded shadow">
                     <!-- Card 1 -->
                     <div class="col-md-6 mb-3">
-                        <div class="card shadow" onclick="location.href='{{ route('mpasient') }}';" style="cursor: pointer;">
+                        <div class="card shadow" onclick="location.href='{{ route('admin.mpasient') }}';" style="cursor: pointer;">
                             <img src="{{ asset('images/manag.png') }}" alt="Image"
                                 class="img-fluid d-block mx-auto rounded" style="height: 30%; width: 30%;">
                             <div class="card-body text-center">
@@ -21,7 +21,7 @@
                     </div>
                     <!-- Card 2 -->
                     <div class="col-md-6 mb-3">
-                        <div class="card shadow" onclick="location.href='{{ route('pemeriksaan') }}';"
+                        <div class="card shadow" onclick="location.href='{{ route('admin.pemeriksaan') }}';"
                             style="cursor: pointer;">
                             <img src="{{ asset('images/bookes.png') }}" alt="Image"
                                 class="img-fluid d-block mx-auto rounded" style="height: 30%; width: 30%;">
@@ -32,7 +32,7 @@
                     </div>
                     <!-- Card 3 -->
                     <div class="col-md-6 mb-3">
-                        <div class="card shadow" onclick="location.href='{{ route('reagensia') }}';" style="cursor: pointer;">
+                        <div class="card shadow" onclick="location.href='{{ route('admin.reagensia') }}';" style="cursor: pointer;">
                             <img src="{{ asset('images/inven.png') }}" alt="Image"
                                 class="img-fluid d-block mx-auto rounded" style="height: 30%; width: 30%;">
                             <div class="card-body text-center">
@@ -42,7 +42,7 @@
                     </div>
                     <!-- Card 4 -->
                     <div class="col-md-6 mb-3">
-                        <div class="card shadow" onclick="location.href='{{ route('instrumen') }}';" style="cursor: pointer;">
+                        <div class="card shadow" onclick="location.href='{{ route('admin.instrumen') }}';" style="cursor: pointer;">
                             <img src="{{ asset('images/monitor.png') }}" alt="Image"
                                 class="img-fluid d-block mx-auto rounded" style="height: 30%; width: 30%;">
                             <div class="card-body text-center">
@@ -63,7 +63,7 @@
                     </div>                    
                     <!-- Card 6 -->
                     <div class="col-md-6 mb-3">
-                        <div class="card shadow" onclick="location.href='{{ route('kunjunganLabolaturium') }}';" style="cursor: pointer;">
+                        <div class="card shadow" onclick="location.href='{{ route('admin.kunjunganLabolaturium') }}';" style="cursor: pointer;">
                             <img src="{{ asset('images/kunjungan.png') }}" alt="Image"
                                 class="img-fluid d-block mx-auto rounded" style="height: 30%; width: 30%;">
                             <div class="card-body text-center">
@@ -120,4 +120,3 @@
         </div>
     </div>
 @endsection
-

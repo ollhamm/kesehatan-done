@@ -41,7 +41,7 @@ class InstrumenController extends Controller
             ]);
     
             Instrumen::create($validatedData);
-        return redirect()->route('instrumen')->with('success', 'Instrument Data Created Successfully');
+        return redirect()->route('admin.instrumen')->with('success', 'Instrument Data Created Successfully');
         }
 
         // Edit Instrumen
@@ -64,7 +64,7 @@ class InstrumenController extends Controller
             $instrumen = Instrumen::findOrFail($id_instrumen);
             $instrumen->update($validatedData);
 
-        return redirect()->route('instrumen')->with('success', 'Instrument Data Updated Successfully');
+        return redirect()->route('admin.instrumen')->with('success', 'Instrument Data Updated Successfully');
         }
 
         // Delete Instrumen
@@ -74,7 +74,7 @@ class InstrumenController extends Controller
         $instrumen = Instrumen::findOrFail($id_instrumen);
         $instrumen->delete();
 
-        return redirect()->route('instrumen')->with('success', 'Instrument Data Deleted Successfully');
+        return redirect()->route('admin.instrumen')->with('success', 'Instrument Data Deleted Successfully');
     }
 
         // Details Instrumen

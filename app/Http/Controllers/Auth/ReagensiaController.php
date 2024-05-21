@@ -40,7 +40,7 @@ class ReagensiaController extends Controller
         ]);
 
         Reagensia::create($validatedData);
-        return redirect()->route('reagensia')->with('success', 'Reagent Inventory Data Successfully Created');
+        return redirect()->route('admin.reagensia')->with('success', 'Reagent Inventory Data Successfully Created');
     }
 
     // Edit Reagen
@@ -62,7 +62,7 @@ class ReagensiaController extends Controller
         $reagensia = Reagensia::findOrFail($id_reagen);
         $reagensia->update($validatedData);
 
-        return redirect()->route('reagensia')->with('success', 'Reagent Inventory Data Successfully Updated');
+        return redirect()->route('admin.reagensia')->with('success', 'Reagent Inventory Data Successfully Updated');
     }
 
     // Delete Reagensia
@@ -72,7 +72,7 @@ class ReagensiaController extends Controller
         $reagensia = Reagensia::findOrFail($id_reagen);
         $reagensia->delete();
 
-        return redirect()->route('reagensia')->with('success', 'Reagent Inventory Data Successfully Delete');
+        return redirect()->route('admin.reagensia')->with('success', 'Reagent Inventory Data Successfully Delete');
     }
 
 

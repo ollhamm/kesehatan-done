@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -20,6 +19,11 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'role',
+        'birthdate',
+        'jenis_kelamin_user',
+        'address',
+        'profile_picture',
     ];
 
     /**
@@ -33,15 +37,34 @@ class User extends Authenticatable
     ];
 
     /**
-     * Get the attributes that should be cast.
+     * The attributes that should be cast.
      *
-     * @return array<string, string>
+     * @var array<string, string>
      */
-    protected function casts(): array
+    protected $casts = [
+        'email_verified_at' => 'datetime',
+        'password' => 'hashed', // Adding this for consistency
+        'birthdate' => 'date',
+        'jenis_kelamin_user' => 'string',
+        'address' => 'string',
+        'profile_picture' => 'string',
+    ];
+
+    /**
+     * Get the patient associated with the user.
+     */
+    public function patient()
     {
-        return [
-            'email_verified_at' => 'datetime',
-            'password' => 'hashed',
-        ];
+        return $this->hasOne(Patient::class, 'user_id');
+    }
+
+    /**
+     * Check if the user is a regular user.
+     *
+     * @return bool
+     */
+    public function isUser()
+    {
+        return $this->role === 'user';
     }
 }

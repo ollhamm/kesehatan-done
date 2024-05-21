@@ -12,11 +12,11 @@ class KunjunganLabolaturiumController extends Controller
 {
     public function showKunjunganForm(Request $request)
     {
-        $query = KunjunganLabolaturium::with('pemeriksaan.patients');
+        $query = KunjunganLabolaturium::with('pemeriksaan.patients.user');
 
-        if ($request->has('nama')) {
-            $query->whereHas('pemeriksaan.patients', function ($q) use ($request) {
-                $q->where('nama', 'like', '%' . $request->nama . '%');
+        if ($request->has('name')) {
+            $query->whereHas('pemeriksaan.patients.user', function ($q) use ($request) {
+                $q->where('name', 'like', '%' . $request->name . '%');
             });
         }
 
@@ -27,12 +27,13 @@ class KunjunganLabolaturiumController extends Controller
         if ($request->has('tanggal_selesai')) {
             $query->where('tanggal_selesai', $request->tanggal_selesai);
         }
-
+    
         $kunjunganLabolaturium = $query->get();
-        $pemeriksaan = Pemeriksaan::all();
+        $pemeriksaan = Pemeriksaan::with('patients')->get();
 
         return view('auth.kunjungan_labolaturium', compact('kunjunganLabolaturium', 'pemeriksaan'));
     }
+    
     
     
     
@@ -53,7 +54,7 @@ class KunjunganLabolaturiumController extends Controller
             'kondisi_sampel' => 'nullable|string',
         ]);
         KunjunganLabolaturium::create($validatedData);
-        return redirect()->route('kunjunganLabolaturium')->with('success', 'LAB Visit Successfully Created');
+        return redirect()->route('admin.kunjunganLabolaturium')->with('success', 'LAB Visit Successfully Created');
     }
 
     // edit
@@ -78,17 +79,16 @@ class KunjunganLabolaturiumController extends Controller
 
         $kunjungan = KunjunganLabolaturium::findOrFail($id);
         $kunjungan->update($validatedData);
-        return redirect()->route('kunjunganLabolaturium')->with('success', 'LAB Visit Data Successfully Updated');
+        return redirect()->route('admin.kunjunganLabolaturium')->with('success', 'LAB Visit Data Successfully Updated');
     }
 
     // delete
     public function destroy($id)
     {
-        // Hapus data pasien dari database
         $kunjungan = KunjunganLabolaturium::findOrFail($id);
         $kunjungan->delete();
 
-        return redirect()->route('kunjunganLabolaturium')->with('success', 'LAB Visit Data Deleted Successfully');
+        return redirect()->route('admin.kunjunganLabolaturium')->with('success', 'LAB Visit Data Deleted Successfully');
     }
 
     // details
@@ -103,7 +103,7 @@ class KunjunganLabolaturiumController extends Controller
 
             return view('auth.detailKunjungan', compact('kunjungan', 'nama_pasien'));
         } else {
-            return redirect()->route('kunjunganLabolaturium')->with('error', 'Data pemeriksaan tidak ditemukan.');
+            return redirect()->route('admin.kunjunganLabolaturium')->with('error', 'Data pemeriksaan tidak ditemukan.');
         }
     }
 

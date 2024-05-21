@@ -6,7 +6,7 @@
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-header text-center" style="font-weight: bold; background-color: #7fbf7f; color: white;">
-                        Detail Pemeriksaan <br/>
+                        Detail Pemeriksaan <br />
                         {{ $pemeriksaan->rincian_pemeriksaan }}
                     </div>
                     <div class="container mt-4">

@@ -16,11 +16,12 @@ class PemeriksaanController extends Controller
         $query = Pemeriksaan::with('patients');
 
 
-        if ($request->has('nama')) {
-            $query->whereHas('patients', function ($q) use ($request) {
-                $q->where('nama', 'like', '%' . $request->nama . '%');
+        if ($request->has('name')) {
+            $query->whereHas('patients.user', function ($q) use ($request) {
+                $q->where('name', 'like', '%' . $request->name . '%');
             });
         }
+        
         if ($request->has('rujukan')) {
             $query->where('rujukan_pemeriksaan', 'like', '%' . $request->rujukan . '%');
         }
@@ -96,7 +97,7 @@ class PemeriksaanController extends Controller
         ]);
     
         Pemeriksaan::create($validatedData);
-        return redirect()->route('pemeriksaan')->with('success', 'Patient examination data Created is successfully');
+        return redirect()->route('admin.pemeriksaan')->with('success', 'Patient examination data Created is successfully');
     }
     
 
@@ -134,7 +135,7 @@ class PemeriksaanController extends Controller
         $pemeriksaans = Pemeriksaan::findOrFail($id_periksa);
         $pemeriksaans->update($validatedData);
 
-        return redirect()->route('pemeriksaan')->with('success', 'Patient examination data Updated is successfully');
+        return redirect()->route('admin.pemeriksaan')->with('success', 'Patient examination data Updated is successfully');
     }
 
     // Delete periksa
@@ -148,7 +149,7 @@ class PemeriksaanController extends Controller
 
         $pemeriksaans->delete();
 
-        return redirect()->route('pemeriksaan')->with('success', 'Check Successfully Deleted');
+        return redirect()->route('admin.pemeriksaan')->with('success', 'Check Successfully Deleted');
     }
 
 

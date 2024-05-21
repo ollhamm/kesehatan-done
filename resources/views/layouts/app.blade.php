@@ -27,6 +27,17 @@
             }
         }
 
+        .custom-btn {
+            background-color: #84cdde;
+            border-color: #84cdde;
+        }
+
+        .custom-btn:hover {
+            background-color: #5aa3af;
+            /* Warna yang lebih tua untuk hover */
+            border-color: #5aa3af;
+        }
+
 
         .fade-in-left {
             animation: fadeInLeftAnimation ease 0.5s;
@@ -89,7 +100,6 @@
         }
 
         .vertical-line {
-            margin-top: -16px;
             height: 30px;
             margin-left: 10px;
             display: inline-block;
@@ -162,7 +172,6 @@
             grid-template-columns: repeat(7, 1fr);
             font-weight: 600;
             text-align: center;
-            /* Ensure text is centered horizontally */
             align-items: center;
         }
 
@@ -317,7 +326,6 @@
             padding: 10px;
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            /* Adjust columns to be equal */
             gap: 6px;
             transform: scale(1.5);
             visibility: hidden;
@@ -344,6 +352,8 @@
             background-color: var(--color-hover);
         }
 
+
+        /* table ketimbun */
         .alamat {
             max-width: 200px;
             white-space: nowrap;
@@ -351,7 +361,9 @@
             text-overflow: ellipsis;
         }
 
-        /* logout style */
+
+
+        /* logout konten */
         .dropdown-item:hover,
         .dropdown-item:focus,
         .dropdown-item:active {
@@ -364,48 +376,124 @@
             border-color: #28a745 !important;
             box-shadow: 0 0 0 0.25rem rgba(40, 167, 69, 0.25) !important;
         }
+
         .small-text {
-            font-size: 12px; /* Adjust this value as needed */
+            font-size: 12px;
         }
+
         .small-banget {
-            font-size: 10px; /* Adjust this value as needed */
+            font-size: 8px;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        .b-small {
+            font-size: 8px;
+            word-wrap: break-word;
+        }
+
+        .bg-custom {
+            background-color: yellow;
+            font-weight: bold;
         }
     </style>
 </head>
 
 <body style="background-color: #e5f2e5">
-    <nav class="navbar navbar-expand-lg navbar-light bg-light px-4 navbar-content" style="background-color: #c9f7c9">
-        <a class="navbar-brand" href="/">
+    {{-- Navbar Start --}}
+    {{-- <nav class="navbar navbar-expand-lg navbar-light bg-light px-4 navbar-content" style="background-color: #c9f7c9">
+        <a class="navbar-brand"
+            href="{{ Auth::check() ? (Auth::guard('admin')->check() ? route('admin.home') : route('user.dashboard')) : '/' }}">
             <span style="font-weight: bold; color: #7fbf7f;"> <i class="fa-solid fa-notes-medical"></i> RSU Cinta
                 Kasih</span>
         </a>
-        @if (!Route::is('login') && !Route::is('register'))
+        @if (Auth::check())
             <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
-                <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
-                    <!-- Tambahkan kelas ms-auto di sini -->
-                    <ul class="navbar-nav">
-                        <li class="nav-item dropdown">
-                            <a style="font-weight: bold; color: #7fbf7f;" class="nav-link dropdown-toggle"
-                                href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
-                                aria-expanded="false">
-                                <i class="fas fa-user"></i> {{ session('user_name') }}
-                            </a>
-                            <div class="dropdown-menu dropdown-menu-end bg-danger mt-2" aria-labelledby="navbarDropdown"
-                                style="max-width:200px; border-radius: 8px; box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);">
-                                <a class="dropdown-item text-light" href="{{ route('logout') }}"
-                                    onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                                    Logout <i class="fas fa-sign-out-alt ms-2"></i>
-                                </a>
-                            </div>
-                            <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                                @csrf
-                            </form>
-                        </li>
-                    </ul>
-                </div>
+                <ul class="navbar-nav">
+                    <li class="nav-item dropdown">
+                        <a style="font-weight: bold; color: #7fbf7f;" class="nav-link dropdown-toggle" href="#"
+                            id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fas fa-user"></i> {{ Auth::user()->name }}
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-end bg-danger mt-2" aria-labelledby="navbarDropdown"
+                            style="max-width:200px; border-radius: 8px; box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);">
+                            @if (Auth::guard('admin')->check())
+                                <!-- Tambahkan form untuk logout admin -->
+                                <form id="admin-logout-form" action="{{ route('admin.logoutAdmin') }}" method="POST">
+                                    @csrf
+                                    <button type="submit" class="dropdown-item text-light">
+                                        Logout <i class="fas fa-sign-out-alt ms-2"></i>
+                                    </button>
+                                </form>
+                                <a class="dropdown-item text-light" href="{{ route('admin.home') }}">Home <i
+                                        class="fas fa-home ms-2"></i></a> <!-- Admin diarahkan ke /home -->
+                            @else
+                                <!-- Tambahkan form untuk logout user -->
+                                <form id="user-logout-form" action="{{ route('user.logoutUser') }}" method="POST">
+                                    @csrf
+                                    <button type="submit" class="dropdown-item text-light">
+                                        Logout <i class="fas fa-sign-out-alt ms-2"></i>
+                                    </button>
+                                </form>                                
+                                </form>
+                                <a class="dropdown-item text-light" href="{{ route('user.dashboard') }}">Dashboard <i
+                                        class="fas fa-tachometer-alt ms-2"></i></a>
+                            @endif
+                        </div>
+                    </li>
+                </ul>
             </div>
-        @endif <!-- End of the conditional statement -->
+        @endif
+    </nav> --}}
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-light px-4 navbar-content"
+        style="background-color: {{ Auth::check() ? (Auth::guard('admin')->check() ? '#c9f7c9' : '#c9f7c9') : 'gray' }}">
+        <a class="navbar-brand"
+            href="{{ Auth::check() ? (Auth::guard('admin')->check() ? route('admin.home') : route('user.dashboard')) : '/' }}">
+            <span
+                style="font-weight: bold; color: {{ Auth::check() ? (Auth::guard('admin')->check() ? '#7fbf7f' : '#6ecbe0') : 'gray' }}">
+                <i class="fa-solid fa-notes-medical"></i> RSU Cinta Kasih
+            </span>
+        </a>
+        @if (Auth::check())
+            <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item dropdown">
+                        <a style="font-weight: bold; color: {{ Auth::guard('admin')->check() ? '#7fbf7f' : '#6ecbe0' }}"
+                            class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fas fa-user"></i> {{ Auth::user()->name }}
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-end bg-danger mt-2" aria-labelledby="navbarDropdown"
+                            style="max-width:200px; border-radius: 8px; box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);">
+                            @if (Auth::guard('admin')->check())
+                                <!-- Tambahkan form untuk logout admin -->
+                                <form id="admin-logout-form" action="{{ route('admin.logoutAdmin') }}" method="POST">
+                                    @csrf
+                                    <button type="submit" class="dropdown-item text-light">
+                                        Logout <i class="fas fa-sign-out-alt ms-2"></i>
+                                    </button>
+                                </form>
+                                <a class="dropdown-item text-light" href="{{ route('admin.home') }}">Home <i
+                                        class="fas fa-home ms-2"></i></a>
+                            @else
+                                <form id="user-logout-form" action="{{ route('user.logoutUser') }}" method="POST">
+                                    @csrf
+                                    <button type="submit" class="dropdown-item text-light">
+                                        Logout <i class="fas fa-sign-out-alt ms-2"></i>
+                                    </button>
+                                </form>
+                                <a class="dropdown-item text-light" href="{{ route('user.dashboard') }}">Dashboard <i
+                                        class="fas fa-tachometer-alt ms-2"></i></a>
+                            @endif
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        @endif
     </nav>
+
+    {{-- Navbar end --}}
 
 
 
@@ -421,7 +509,7 @@
     </script>
 
 
-    {{-- print barcode --}}
+    {{-- print barcode start --}}
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             document.getElementById('btn-print-barcode').addEventListener('click', function() {
@@ -430,10 +518,10 @@
             });
 
             function generateBarcode(text) {
-                var printWidth = 300;
-                var printHeight = 300;
-                var paperWidth = '8in';
-                var paperHeight = '10in';
+                var printWidth = 100;
+                var printHeight = 100;
+                var paperWidth = 200;
+                var paperHeight = 100;
 
                 var barcodeImage = document.createElement('img');
                 barcodeImage.src = 'https://barcode.tec-it.com/barcode.ashx?data=' + text + '&code=Code128&dpi=96';
@@ -446,7 +534,6 @@
                 barcodeDiv.innerHTML = '';
                 barcodeDiv.appendChild(barcodeImage);
 
-                // Apply CSS for printing
                 var style = document.createElement('style');
                 style.textContent = `
         @media print {
@@ -458,9 +545,7 @@
             }
             #barcode {
                 position: absolute;
-                left: 50%;
-                top: 80%;
-                transform: translate(-50%, -50%);
+                left: 20%;
                 width: ${printWidth}px;
                 height: ${printHeight}px;
             }
@@ -470,51 +555,49 @@
             }
         }
     `;
-                document.head.appendChild(style);
-
-                setTimeout(function() {
-                    window.print(); 
-                }, 1000); 
             }
         });
     </script>
     {{-- end print barcode --}}
 
-{{-- print detail --}}
-<script>
-    document.addEventListener("DOMContentLoaded", function() {
-        document.getElementById('btn-print-detail').addEventListener('click', function() {
-            var navbar = document.querySelector('.navbar');
-            if (navbar) {
-                navbar.style.visibility = 'hidden'; // Menyembunyikan navbar saat mencetak
-            }
+    {{-- print detail start --}}
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            document.getElementById('btn-print-detail').addEventListener('click', function() {
+                var navbar = document.querySelector('.navbar');
+                if (navbar) {
+                    navbar.style.visibility = 'hidden';
+                }
 
-            var printButtonDetail = document.getElementById('btn-print-detail');
-            if (printButtonDetail) {
-                printButtonDetail.style.display = 'none'; // Menyembunyikan tombol cetak saat mencetak
-            }
-            var printButtonBarcode = document.getElementById('btn-print-barcode');
-            if (printButtonBarcode) {
-                printButtonBarcode.style.display = 'none'; // Menyembunyikan tombol cetak saat mencetak
-            }
+                var printButtonDetail = document.getElementById('btn-print-detail');
+                if (printButtonDetail) {
+                    printButtonDetail.style.display = 'none';
+                }
+                var printButtonBarcode = document.getElementById('btn-print-barcode');
+                if (printButtonBarcode) {
+                    printButtonBarcode.style.display = 'none';
+                }
 
-            var printStyle = document.createElement('style');
-            printStyle.textContent = `
+                var printStyle = document.createElement('style');
+                printStyle.textContent = `
                 @media print {
                     @page {
                         size: A4;
                         margin: 0.5cm;
                     }
+                    .no-print {
+                display: none !important;
+            }
 
                     body {
                         margin: 0;
                         padding: 0;
-                        font-size: 60%;
+                        font-size: 100%;
                     }
 
                     .container {
                         max-width: 100% !important;
-                        width: 90% !important;
+                        width: 100% !important;
                         margin-top: 20px;
                         margin-bottom: 20px;
                     }
@@ -536,32 +619,28 @@
                     }
                 }
             `;
-            document.head.appendChild(printStyle);
+                document.head.appendChild(printStyle);
 
-            window.print();
+                window.print();
 
-            // Mengembalikan tampilan elemen setelah pencetakan
-            setTimeout(function() {
-                if (navbar) {
-                    navbar.style.visibility = 'visible';
-                }
-                if (printButtonDetail) {
-                    printButtonDetail.style.display = 'block';
-                }
-                if (printButtonBarcode) {
-                    printButtonBarcode.style.display = 'block';
-                }
-                document.head.removeChild(printStyle);
-            }, 1000);
+                setTimeout(function() {
+                    if (navbar) {
+                        navbar.style.visibility = 'visible';
+                    }
+                    if (printButtonDetail) {
+                        printButtonDetail.style.display = 'block';
+                    }
+                    if (printButtonBarcode) {
+                        printButtonBarcode.style.display = 'block';
+                    }
+                    document.head.removeChild(printStyle);
+                }, 1000);
+            });
         });
-    });
-</script>
+    </script>
+    {{-- print detail end --}}
 
-
-
-
-
-    {{-- Animasi --}}
+    {{-- Animasi Start --}}
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const elementsFadeIn = document.querySelectorAll('.fade-in');
@@ -603,6 +682,9 @@
             navbarContent.style.transform = 'translateY(0)';
         });
     </script>
+    {{-- Animasi End --}}
+
+    {{-- Kalender start --}}
     <script>
         let calendar = document.querySelector('.calendar')
 
@@ -634,7 +716,6 @@
             month_picker.innerHTML = curr_month
             calendar_header_year.innerHTML = year
 
-            // get first day of month
             let first_day = new Date(year, month, 1)
 
             for (let i = 0; i <= days_of_month[month] + first_day.getDay() - 1; i++) {
@@ -698,23 +779,26 @@
             document.querySelector('body').classList.toggle('light')
             document.querySelector('body').classList.toggle('dark')
         }
-    </script> 
+    </script>
+    {{-- kalender End --}}
+
+    {{-- pop up berhasil --}}
     <script>
-        // Fungsi untuk menampilkan popup notifikasi
         function showSuccessAlert() {
             const alert = document.getElementById('successAlert');
             alert.classList.remove('d-none');
             setTimeout(() => {
                 alert.classList.add('d-none');
-            }, 3000); // Waktu dalam milidetik (5 detik)
+            }, 3000);
         }
-    
-        // Panggil fungsi saat halaman dimuat
-        document.addEventListener('DOMContentLoaded', function () {
+
+        document.addEventListener('DOMContentLoaded', function() {
             showSuccessAlert();
         });
     </script>
-    
-    
+
+
+
 </body>
+
 </html>

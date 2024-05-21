@@ -5,8 +5,10 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Patient;
+use App\Models\User;
 use App\Models\Reagensia;
 use App\Models\Pemeriksaan;
+use App\Models\DataCallcenter;
 use App\Models\KunjunganLabolaturium;
 use Illuminate\Support\Str;
 
@@ -37,22 +39,30 @@ class ManajemenPasienController extends Controller
     // manajement pasien view
     public function showManajementForm(Request $request)
     {
-        $query = Patient::query();
+        $query = Patient::with('user');
 
-        if ($request->has('nama')) {
-            $query->where('nama', 'like', '%' . $request->nama . '%');
+        if ($request->has('name')) {
+            $query->whereHas('user', function ($q) use ($request) {
+                $q->where('name', 'like', '%' . $request->nama . '%');
+            });
         }
+
         if ($request->has('rujukan')) {
             $query->where('rujukan', 'like', '%' . $request->rujukan . '%');
         }
-        if ($request->has('tempat_dan_tanggal_lahir')) {
-            $query->where('tempat_dan_tanggal_lahir', 'like', '%' . $request->tempat_dan_tanggal_lahir . '%');
-        }
 
+        if ($request->has('rm')) {
+            $query->where('rm', 'like', '%' . $request->rm . '%');
+        }
+    
         $patients = $query->get();
         $defaultRM = $this->generateRMCode();
-        return view('auth.mpasient', compact('patients', 'defaultRM'));
+        $users = User::all();
+
+        return view('auth.mpasient', compact('patients', 'defaultRM', 'users'));
     }
+    
+    
 
     // generate kode P00
     private function generateRMCode()
@@ -77,11 +87,7 @@ class ManajemenPasienController extends Controller
     public function store(Request $request)
     {
         $validatedData = $request->validate([
-            'nama' => 'required',
-            'umur' => 'required|numeric',
-            'jenis_kelamin' => 'required',
-            'tempat_dan_tanggal_lahir' => 'required',
-            'alamat' => 'required',
+            'user_id' => 'required',
             'rm' => 'required',
             'rujukan' => 'required',
             'jenis_asuransi' => 'required',
@@ -89,8 +95,19 @@ class ManajemenPasienController extends Controller
             'status' => 'required',
         ]);
 
-        Patient::create($validatedData);
-        return redirect()->route('mpasient')->with('success', 'The check has been made successfully!');
+        $patient = Patient::create($validatedData);
+
+        if ($patient) {
+            $dataCallcenter = new DataCallcenter();
+            $dataCallcenter->name = $patient->user->name;
+            $dataCallcenter->rm = $patient->rm;
+            $dataCallcenter->save();
+
+
+            return redirect()->route('admin.mpasient')->with('success', 'The check has been made successfully!');
+        }
+
+        return redirect()->back()->with('error', 'Failed to save data.');
     }
 
     // edit pasien
@@ -103,11 +120,7 @@ class ManajemenPasienController extends Controller
     public function update(Request $request, $id_pasien)
     {
         $validatedData = $request->validate([
-            'nama' => 'required',
-            'umur' => 'required|numeric',
-            'jenis_kelamin' => 'required',
-            'tempat_dan_tanggal_lahir' => 'required',
-            'alamat' => 'required',
+            'user_id' => 'required',
             'rm' => 'required',
             'rujukan' => 'required',
             'jenis_asuransi' => 'required',
@@ -118,7 +131,7 @@ class ManajemenPasienController extends Controller
         $patient = Patient::findOrFail($id_pasien);
         $patient->update($validatedData);
 
-        return redirect()->route('mpasient')->with('success', 'Data Patient Updated Successfully');
+        return redirect()->route('admin.mpasient')->with('success', 'Data Patient Updated Successfully');
     }
 
     public function destroy($id_pasien)
@@ -135,7 +148,7 @@ class ManajemenPasienController extends Controller
         $patient = Patient::findOrFail($id_pasien);
         $patient->delete();
 
-        return redirect()->route('mpasient')->with('success', 'Patient Successfully Deleted');
+        return redirect()->route('admin.mpasient')->with('success', 'Patient Successfully Deleted');
     }
 
     // show datadiri dan pemeriksaan

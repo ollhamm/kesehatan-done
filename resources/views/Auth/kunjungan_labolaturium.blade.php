@@ -5,22 +5,22 @@
 @section('content')
     <div class="container">
         @if (session('success'))
-        <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
-            <div id="successAlert" class="alert alert-success alert-dismissible fade show" role="alert">
-                {{ session('success') }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
+                <div id="successAlert" class="alert alert-success alert-dismissible fade show" role="alert">
+                    {{ session('success') }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
             </div>
-        </div>
-    @endif
+        @endif
         <div class="mt-4">
             <div class="header-container rounded text-center mb-4"
                 style="background-color: #caecca; padding-left: 20px; padding-right: 20px;">
                 <h1 class="display-5 font-weight-bold text-success">Kunjungan Lab</h1>
             </div>
-            <form action="{{ route('kunjunganLabolaturium') }}" method="GET" class="mb-4 fade-in-left">
+            <form action="{{ route('admin.kunjunganLabolaturium') }}" method="GET" class="mb-4 fade-in-left">
                 <div class="row">
                     <div class="col-md-4">
-                        <input type="text" name="nama" class="form-control mb-2" placeholder="Cari berdasarkan nama">
+                        <input type="text" name="name" class="form-control mb-2" placeholder="Cari berdasarkan nama">
                     </div>
                     <div class="col-md-4">
                         <input type="date" name="tanggal_kunjunggan" class="form-control mb-2"
@@ -30,7 +30,7 @@
                         <div class="input-group mb-2">
                             <input type="date" name="tanggal_selesai" class="form-control">
                             <div class="input-group-append">
-                                <a href="{{ route('kunjunganLabolaturium') }}" class="btn btn-secondary">Reset</a>
+                                <a href="{{ route('admin.kunjunganLabolaturium') }}" class="btn btn-secondary">Reset</a>
                             </div>
                         </div>
                     </div>
@@ -60,7 +60,7 @@
                         @foreach ($kunjunganLabolaturium as $kunjungan)
                             <tr>
                                 <td>{{ $no++ }}</td>
-                                <td class="alamat">{{ $kunjungan->pemeriksaan->patients->nama }}</td>
+                                <td class="alamat">{{ $kunjungan->pemeriksaan->patients->user->name }}</td>
                                 <td>{{ $kunjungan->pemeriksaan->tanggal_pemeriksaan }}</td>
                                 <td class="text-danger">{{ $kunjungan->tanggal_kunjungan }}</td>
                                 <td class="text-success">{{ $kunjungan->tanggal_selesai }}</td>
@@ -68,14 +68,14 @@
                                     <button type="button" class="btn btn-warning text-light btn-sm mr-2"
                                         data-bs-toggle="modal" data-bs-target="#editKunjunganModal{{ $kunjungan->id }}"><i
                                             class="fa-solid fa-pen"></i></button>
-                                    <form action="{{ route('kunjunganLabolaturium.destroy', $kunjungan->id) }}"
+                                    <form action="{{ route('admin.kunjunganLabolaturium.destroy', $kunjungan->id) }}"
                                         method="POST" style="display: inline;">
                                         @csrf
                                         @method('DELETE')
                                         <button class="btn btn-danger btn-sm" type="submit"><i
                                                 class="fa-solid fa-trash"></i></button>
                                     </form>
-                                    <a href="{{ route('kunjunganLabolaturium.details', $kunjungan->id) }}"
+                                    <a href="{{ route('admin.kunjunganLabolaturium.details', $kunjungan->id) }}"
                                         class="btn btn-primary btn-sm ml-2"><i class="fa-solid fa-eye"></i></a>
                                 </td>
                             </tr>
@@ -96,13 +96,13 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form action="{{ route('kunjunganLabolaturium.store') }}" method="POST" novalidate>
+                    <form action="{{ route('admin.kunjunganLabolaturium.store') }}" method="POST" novalidate>
                         @csrf
                         <div class="mb-3">
                             <label for="id_pemeriksaan" class="form-label">Pilih Pasien:</label>
                             <select class="form-select" id="id_pemeriksaan" name="id_pemeriksaan" required>
-                                @foreach ($pemeriksaan as $knj)
-                                    <option value="{{ $knj->id_periksa }}">{{ $knj->patients->nama }}</option>
+                                @foreach ($pemeriksaan as $key => $knj)
+                                    <option value="{{ $knj->id_periksa }}">{{ $key + 1 }}.{{ $knj->patients->user->name }}</option>
                                 @endforeach
                             </select>
                             <div class="invalid-feedback">
@@ -204,13 +204,13 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <form action="{{ route('kunjunganLabolaturium.update', $kunjungan->id) }}" method="POST">
+                        <form action="{{ route('admin.kunjunganLabolaturium.update', $kunjungan->id) }}" method="POST">
                             @csrf
                             @method('PUT')
                             <div class="form-group mb-3">
                                 <label for="id_pasien" class="form-label text-secondary">Nama Pasien:</label>
                                 <span
-                                    class="form-control-plaintext bg-light border rounded p-2">{{ $kunjungan->pemeriksaan->patients->nama }}</span>
+                                    class="form-control-plaintext bg-light border rounded p-2">{{ $kunjungan->pemeriksaan->patients->user->name }}</span>
                             </div>
                             <input type="hidden" name="id_pemeriksaan" value="{{ $kunjungan->id_pemeriksaan }}">
                             <div class="mb-3">

@@ -16,19 +16,19 @@
             </div>
             <div class="col-md-6">
                 <div class="card border-0">
-                    <div class="card-header text-center" style="font-weight: bold; background-color: #7fbf7f; color: white;">
+                    <div class="card-header text-center"
+                        style="font-weight: bold; background-color: #7fbf7f; color: white;">
                         Identitas Pasien <br />
                         {{ $patient->rm }}
                     </div>
                     <div id="barcode" class="card-body" data-rm="{{ $patient->rm }}">
                         <pre>
-Nama                 : <strong>{{ $patient->nama }}</strong>
-Umur                 : <strong>{{ $patient->umur }} tahun</strong>
-Jenis Kelamin        : <strong>{{ $patient->jenis_kelamin }}</strong>
-Tempat Tanggal Lahir : <strong>{{ $patient->tempat_dan_tanggal_lahir }}</strong>
-Alamat               : <strong class="alamat">{{ $patient->alamat }}</strong>
+Nama                 : <strong>{{ $patient->user->name }}</strong>
+Jenis Kelamin        : <strong>{{ $patient->user->jenis_kelamin_user }}</strong>
+Tempat Tanggal Lahir : <strong>{{ $patient->user->birthdate }}</strong>
+Alamat               : <strong class="alamat">{{ $patient->user->address }}</strong>
 Jenis Asuransi       : <strong>{{ $patient->jenis_asuransi }}</strong>
-Nomor Asuransi       : <strong>{{ $patient->nomor_asuransi }}</strong>
+Nomor Asuransi       : <strong>{{ $patient->nomor_asuransi ?: '-' }}</strong>
 RM (Rekam Medis)     : <strong>{{ $patient->rm }}</strong>
 Rujukan              : <strong>{{ $patient->rujukan }}</strong>
 Status               : <strong style="color: {{ $patient->status == 'Aktif' ? 'green' : 'red' }}">{{ $patient->status }}</strong>
@@ -156,7 +156,7 @@ Rincian Tindakan :
 <table class="table">
     <thead>
         <tr>
-            <th colspan="10" class="bg-light p-2">Pemeriksaan Hematologi Lengkap:</th>
+            <th colspan="10" class="bg-light p-2">Pemeriksaan Hematologi Lengkap</th>
         </tr>
     </thead>
     <tbody>
